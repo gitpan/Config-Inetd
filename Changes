@@ -1,5 +1,16 @@
 Revision history for Perl extension Config::Inetd.
 
+0.23 Wed Mar 15 22:51:54 CET 2006
+
+ - Added func.t to the test suite. Checks against a local 
+   copy of inetd.conf whether $inetd->dump_enabled() & $inetd->
+   dump_disabled() return the expected amount of services.
+   Furthermore, evaluates whether $inetd->disable() & $inetd->
+   enable() trigger the according changes correctly; the state 
+   of $inetd->is_enabled() is checked against an enabled service.
+   All services are checked via a custom regular expression to
+   ensure that instance data access functions.
+
 0.22 Wed Mar 15 16:51:11 CET 2006
 
  - Lines read in from inetd.conf preserve their newlines as
