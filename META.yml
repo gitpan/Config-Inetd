@@ -1,9 +1,21 @@
---- #YAML:1.0
-module_name: Config-Inetd
-dist_version_from: lib/Config/Inetd.pm
-installdirs: site
-requires:
-    Tie::File: 0 
-distribution_type: module
+---
+name: Config-Inetd
+version: 0.22
+author:
+  - 'Steven Schubiger <schubiger@cpan.org>'
+abstract: Interface inetd's configuration file
 license: perl
-dist_abstract: An interface to inetd.conf
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  Carp: 0
+  Fcntl: 0
+  Tie::File: 0
+provides:
+  Config::Inetd:
+    file: lib/Config/Inetd.pm
+    version: 0.22
+generated_by: Module::Build version 0.2706
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
