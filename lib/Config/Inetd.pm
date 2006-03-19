@@ -10,7 +10,7 @@ use Tie::File ();
 
 our ($VERSION, $INETD_CONF, $conf_tied);
 
-$VERSION = '0.24';
+$VERSION = '0.25';
 $INETD_CONF = '/etc/inetd.conf';
 
 sub new {

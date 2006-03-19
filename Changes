@@ -1,5 +1,9 @@
 Revision history for Perl extension Config::Inetd.
 
+0.25 Sun Mar 19 22:49:56 CET 2006
+
+ - Added INSTALL containing install instructions.
+
 0.23 Wed Mar 15 22:51:54 CET 2006
 
  - Added func.t to the test suite. Checks against a local 
