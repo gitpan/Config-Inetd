@@ -11,7 +11,7 @@ use Tie::File ();
 
 our ($VERSION, $INETD_CONF);
 
-$VERSION = '0.30';
+$VERSION = '0.30_01';
 $INETD_CONF = '/etc/inetd.conf';
 
 validation_options(
@@ -38,7 +38,8 @@ sub new
 
 sub _tie_conf
 {
-    my ($self, $conf_file) = @_;
+    my $self = shift;
+    my ($conf_file) = @_;
     $conf_file ||= $INETD_CONF;
 
     my $conf_tied = tie(
@@ -80,7 +81,7 @@ sub enable
     my ($serv, $prot) = @_;
 
     foreach my $entry (@{$self->{CONF}}) {
-        if ($entry =~ /^\#.*$serv.*$prot\b/) {
+        if ($entry =~ /^ \# .*? $serv .+? $prot \b/x) {
             $self->{ENABLED}{$serv}{$prot} = true;
             $entry = substr($entry, 1);
             return true;
@@ -97,9 +98,9 @@ sub disable
     my ($serv, $prot) = @_;
 
     foreach my $entry (@{$self->{CONF}}) {
-        if ($entry =~ /^(?!\#).*$serv.*$prot\b/) {
+        if ($entry =~ /^ (?!\#) .*? $serv .+? $prot \b/x) {
             $self->{ENABLED}{$serv}{$prot} = false;
-            $entry = '#'.$entry;
+            $entry = "#$entry";
             return true;
         }
     }
@@ -129,7 +130,8 @@ sub dump_disabled
 
 sub _filter_conf
 {
-    my ($self, $conf, @regexps) = @_;
+    my $self = shift;
+    my ($conf, @regexps) = @_;
 
     unshift @regexps, qr/(?:stream|dgram|raw|rdm|seqpacket)/;
 
@@ -143,7 +145,8 @@ sub _filter_conf
 
 sub _extract_serv_prot
 {
-    my ($self, $entry) = @_;
+    my $self = shift;
+    my ($entry) = @_;
 
     my ($serv, $prot) = (split /\s+/, $entry)[0,2];
 
@@ -261,10 +264,10 @@ configuration file.
 The inetd configuration file is tied as instance data (newlines are
 preserved); it may be accessed directly via C<< @{$inetd->{CONF}} >>.
 
-=head1 CAVEAT
+=head1 BUGS & CAVEATS
 
 It is strongly advised that the configuration file is B<backuped> first
-if one is intending to work with the default (e.g., system-wide)
+if one is intending to work with the default (i.e., system-wide)
 configuration file and not a customized one.
 
 =head1 SEE ALSO
@@ -280,6 +283,6 @@ Steven Schubiger <schubiger@cpan.org>
 This program is free software; you may redistribute it and/or
 modify it under the same terms as Perl itself.
 
-See L<http://www.perl.com/perl/misc/Artistic.html>
+See L<http://dev.perl.org/licenses/>
 
 =cut

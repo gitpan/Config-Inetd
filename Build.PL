@@ -18,10 +18,6 @@ my $build = Module::Build->new
                  'Tie::File' => 0,
                },
    build_requires => { 'Test::More' => 0 },
-   recommends => {
-                   'Test::Pod' => '1.14',
-                   'Test::Pod::Coverage' => '1.04',
-                 },
    license => 'perl',
    create_readme => 1,
    create_makefile_pl => 'traditional',

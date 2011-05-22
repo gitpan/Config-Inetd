@@ -5,22 +5,36 @@ use warnings;
 
 use Config::Inetd;
 use File::Temp ':POSIX';
-use Test::More tests => 6;
+use Test::More tests => 11;
 
-my $tmpfile = tmpnam();
-open(my $fh, '>', $tmpfile) or die "Cannot write to temporary file: $!\n";
+my ($fh, $tmpfile) = tmpnam();
 print {$fh} do { local $/; <DATA> };
 close($fh);
 
 my $inetd = Config::Inetd->new($tmpfile);
 
-is($inetd->dump_enabled, 8, '$inetd->dump_enabled()');
-is($inetd->dump_disabled, 41, '$inetd->dump_disabled()');
-is($inetd->disable(daytime => 'tcp'), 1, '$inetd->disable()');
-is($inetd->enable(daytime => 'tcp'), 1, '$inetd->enable()');
-is($inetd->is_enabled(daytime => 'tcp'), 1, '$inetd->is_enabled()');
+my ($enabled, $disabled) = (8, 41);
 
-my $regex = qr{
+is($inetd->dump_enabled,  $enabled,  '$inetd->dump_enabled()');
+is($inetd->dump_disabled, $disabled, '$inetd->dump_disabled()');
+
+my $count = sub
+{
+    my ($conf, $regex) = @_;
+    return scalar grep { $_ =~ $regex } @$conf;
+};
+
+is($count->($inetd->{CONF}, qr/^\#/), $disabled, 'disabled entries before');
+ok($inetd->disable(daytime => 'tcp'), '$inetd->disable()');
+ok(!$inetd->is_enabled(daytime => 'tcp'), 'service is disabled');
+is($count->($inetd->{CONF}, qr/^\#/), $disabled + 1, 'disabled entries after');
+
+is($count->($inetd->{CONF}, qr/^[^\#]/), $enabled - 1, 'enabled entries before');
+ok($inetd->enable(daytime => 'tcp'), '$inetd->enable()');
+ok($inetd->is_enabled(daytime => 'tcp'), 'service is enabled');
+is($count->($inetd->{CONF}, qr/^[^\#]/), $enabled, 'enabled entries after');
+
+my $entry = qr{
     ^   \#?[\w\Q/.:-[]\E]+
     \s+ (?:stream|dgram)
     \s+ (?:tcp|udp|rpc/udp)6?
@@ -30,13 +44,10 @@ my $regex = qr{
     \s* (?:[\w\.]+)?
 }x;
 
-my $match;
-foreach (@{$inetd->{CONF}}) {
-    $match++ if /$regex/;
-}
-is($match, 49, '@{$inetd->{CONF}} instance data');
+my $matches = scalar grep { $_ =~ $entry } @{$inetd->{CONF}};
+is($matches, $enabled + $disabled, '@{$inetd->{CONF}} instance data');
 
-unlink($tmpfile);
+unlink $tmpfile;
 
 __DATA__
 #	$OpenBSD: inetd.conf,v 1.55 2004/06/29 20:05:04 matthieu Exp $

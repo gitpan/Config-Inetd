@@ -1,5 +1,29 @@
 Revision history for Perl extension Config::Inetd.
 
+0.30_01  2011-05-22  <schubiger@cpan.org>
+
+ - Test that enable() and disable() alter the configuration file;
+   once done, ensure that the status of the service has changed.
+
+ - Use whitespace for the regexes in enable() and disable();
+   moreover, make them more strict where possible.
+
+ - Separate assignment of invocant from method arguments.
+
+ - Minor indentation changes.
+
+ - Rename the caveat documentation section.
+
+ - Update broken license link.
+
+ - Skip documentation tests for non-release testing.
+
+ - Do no longer recommend Test::Pod and Test::Pod::Coverage.
+
+ - Remove the testing diagnostic.
+
+ - Print to filehandle returned by tmpnam().
+
 0.30 Sun Oct  5 13:48:13 CEST 2008
 
  - Fixed an error related to unlocking within DESTROY by make it

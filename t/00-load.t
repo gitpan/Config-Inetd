@@ -5,8 +5,7 @@ use warnings;
 
 use Test::More tests => 1;
 
-BEGIN {
+BEGIN
+{
     use_ok('Config::Inetd');
 }
-
-diag("Testing Config::Inetd $Config::Inetd::VERSION, Perl $], $^X");
