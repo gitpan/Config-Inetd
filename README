@@ -13,7 +13,7 @@ SYNOPSIS
      print $inetd->dump_enabled;
      print $inetd->dump_disabled;
 
-     print $inetd->{CONF}[6];
+     print $inetd->config->[6];
 
 DESCRIPTION
     `Config::Inetd' provides an interface to inetd's configuration file
@@ -75,14 +75,24 @@ METHODS
     Returns a flat list that consists of the disabled entries as seen in the
     configuration file.
 
+  config
+    Access the tied configuration file.
+
+     @config = @{$inetd->config};
+
+    Returns an array reference.
+
 INSTANCE DATA
-    The inetd configuration file is tied as instance data (newlines are
-    preserved); it may be accessed directly via `@{$inetd->{CONF}}'.
+    The inetd configuration file is tied as instance data with newlines
+    preserved; it may be accessed via $inetd->config.
 
 BUGS & CAVEATS
     It is strongly advised that the configuration file is backuped first if
     one is intending to work with the default (i.e., system-wide)
     configuration file and not a customized one.
+
+    Accessing `@{$inetd->{CONF}}' is deprecated and superseded by
+    $inetd->config.
 
 SEE ALSO
     Tie::File, inetd.conf(5)

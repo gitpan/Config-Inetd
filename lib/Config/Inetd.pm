@@ -11,7 +11,7 @@ use Tie::File ();
 
 our ($VERSION, $INETD_CONF);
 
-$VERSION = '0.30_01';
+$VERSION = '0.30_02';
 $INETD_CONF = '/etc/inetd.conf';
 
 validation_options(
@@ -128,6 +128,14 @@ sub dump_disabled
     return @conf;
 }
 
+sub config
+{
+    my $self = shift;
+    validate_pos(@_);
+
+    return $self->{CONF};
+}
+
 sub _filter_conf
 {
     my $self = shift;
@@ -188,7 +196,7 @@ Config::Inetd - Interface inetd's configuration file
  print $inetd->dump_enabled;
  print $inetd->dump_disabled;
 
- print $inetd->{CONF}[6];
+ print $inetd->config->[6];
 
 =head1 DESCRIPTION
 
@@ -259,16 +267,27 @@ Dumps the disabled services.
 Returns a flat list that consists of the disabled entries as seen in the
 configuration file.
 
+=head2 config
+
+Access the tied configuration file.
+
+ @config = @{$inetd->config};
+
+Returns an array reference.
+
 =head1 INSTANCE DATA
 
-The inetd configuration file is tied as instance data (newlines are
-preserved); it may be accessed directly via C<< @{$inetd->{CONF}} >>.
+The inetd configuration file is tied as instance data with newlines
+preserved; it may be accessed via $inetd->config.
 
 =head1 BUGS & CAVEATS
 
 It is strongly advised that the configuration file is B<backuped> first
 if one is intending to work with the default (i.e., system-wide)
 configuration file and not a customized one.
+
+Accessing C<< @{$inetd->{CONF}} >> is deprecated and superseded by
+$inetd->config.
 
 =head1 SEE ALSO
 

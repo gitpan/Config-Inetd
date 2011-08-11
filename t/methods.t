@@ -7,7 +7,8 @@ use Config::Inetd;
 use File::Temp ':POSIX';
 use Test::More tests => 11;
 
-my ($fh, $tmpfile) = tmpnam();
+my $tmpfile = tmpnam();
+open(my $fh, '>', $tmpfile) or die "Cannot open $tmpfile: $!\n";
 print {$fh} do { local $/; <DATA> };
 close($fh);
 
@@ -24,15 +25,15 @@ my $count = sub
     return scalar grep { $_ =~ $regex } @$conf;
 };
 
-is($count->($inetd->{CONF}, qr/^\#/), $disabled, 'disabled entries before');
+is($count->($inetd->config, qr/^\#/), $disabled, 'disabled entries before');
 ok($inetd->disable(daytime => 'tcp'), '$inetd->disable()');
 ok(!$inetd->is_enabled(daytime => 'tcp'), 'service is disabled');
-is($count->($inetd->{CONF}, qr/^\#/), $disabled + 1, 'disabled entries after');
+is($count->($inetd->config, qr/^\#/), $disabled + 1, 'disabled entries after');
 
-is($count->($inetd->{CONF}, qr/^[^\#]/), $enabled - 1, 'enabled entries before');
+is($count->($inetd->config, qr/^[^\#]/), $enabled - 1, 'enabled entries before');
 ok($inetd->enable(daytime => 'tcp'), '$inetd->enable()');
 ok($inetd->is_enabled(daytime => 'tcp'), 'service is enabled');
-is($count->($inetd->{CONF}, qr/^[^\#]/), $enabled, 'enabled entries after');
+is($count->($inetd->config, qr/^[^\#]/), $enabled, 'enabled entries after');
 
 my $entry = qr{
     ^   \#?[\w\Q/.:-[]\E]+
@@ -44,8 +45,8 @@ my $entry = qr{
     \s* (?:[\w\.]+)?
 }x;
 
-my $matches = scalar grep { $_ =~ $entry } @{$inetd->{CONF}};
-is($matches, $enabled + $disabled, '@{$inetd->{CONF}} instance data');
+my $matches = scalar grep { $_ =~ $entry } @{$inetd->config};
+is($matches, $enabled + $disabled, 'config instance data');
 
 unlink $tmpfile;
 

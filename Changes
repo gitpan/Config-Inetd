@@ -1,5 +1,17 @@
 Revision history for Perl extension Config::Inetd.
 
+0.30_02  2011-08-11  <schubiger@cpan.org>
+
+ - Undo printing to filehandle returned by tmpnam() as it breaks
+   tests on Windows.
+
+ - Deprecate direct access to tied configuration file in favor
+   of the accessor method config() which supersedes it.
+
+ - Document config() and the deprecation of its predecessor.
+
+ - Change the tests to use the config() method.
+
 0.30_01  2011-05-22  <schubiger@cpan.org>
 
  - Test that enable() and disable() alter the configuration file;
