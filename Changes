@@ -1,5 +1,9 @@
 Revision history for Perl extension Config::Inetd.
 
+0.30_03  2011-08-14  <schubiger@cpan.org>
+
+ - Enclose literal code in documentation in angle brackets.
+
 0.30_02  2011-08-11  <schubiger@cpan.org>
 
  - Undo printing to filehandle returned by tmpnam() as it breaks

@@ -11,7 +11,7 @@ use Tie::File ();
 
 our ($VERSION, $INETD_CONF);
 
-$VERSION = '0.30_02';
+$VERSION = '0.30_03';
 $INETD_CONF = '/etc/inetd.conf';
 
 validation_options(
@@ -278,7 +278,7 @@ Returns an array reference.
 =head1 INSTANCE DATA
 
 The inetd configuration file is tied as instance data with newlines
-preserved; it may be accessed via $inetd->config.
+preserved; it may be accessed via C<< $inetd->config >>.
 
 =head1 BUGS & CAVEATS
 
@@ -287,7 +287,7 @@ if one is intending to work with the default (i.e., system-wide)
 configuration file and not a customized one.
 
 Accessing C<< @{$inetd->{CONF}} >> is deprecated and superseded by
-$inetd->config.
+C<< $inetd->config >>.
 
 =head1 SEE ALSO
 

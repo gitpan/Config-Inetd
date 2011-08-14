@@ -84,7 +84,7 @@ METHODS
 
 INSTANCE DATA
     The inetd configuration file is tied as instance data with newlines
-    preserved; it may be accessed via $inetd->config.
+    preserved; it may be accessed via `$inetd->config'.
 
 BUGS & CAVEATS
     It is strongly advised that the configuration file is backuped first if
@@ -92,7 +92,7 @@ BUGS & CAVEATS
     configuration file and not a customized one.
 
     Accessing `@{$inetd->{CONF}}' is deprecated and superseded by
-    $inetd->config.
+    `$inetd->config'.
 
 SEE ALSO
     Tie::File, inetd.conf(5)
