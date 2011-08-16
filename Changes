@@ -1,5 +1,9 @@
 Revision history for Perl extension Config::Inetd.
 
+0.31  2011-08-16  <schubiger@cpan.org>
+
+ - Merged development version to stable.
+
 0.30_03  2011-08-14  <schubiger@cpan.org>
 
  - Enclose literal code in documentation in angle brackets.
